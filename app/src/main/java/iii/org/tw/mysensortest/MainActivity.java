@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //-----三軸加速感應器
-        sensor = smgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensor = smgr.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         if (sensor == null) {
 
         }
@@ -57,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         smgr.unregisterListener(listener);
 
+    }
+
+    //-----注意 要取得View的寬高需在這裡取得
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Log.d("Abner","X =" + TextX.getWidth() + "Y = " + TextX.getHeight());
     }
 
     private class MySensorListener implements SensorEventListener {

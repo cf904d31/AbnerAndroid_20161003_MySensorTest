@@ -7,6 +7,7 @@ import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private SensorManager smgr;
     private Sensor sensor;
     private MySensorListener listener;
+    private TextView TextX,TextY,TextZ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
         smgr = (SensorManager)getSystemService(SENSOR_SERVICE);
         listener = new MySensorListener();
+        TextX = (TextView)findViewById(R.id.vX);
+        TextY = (TextView)findViewById(R.id.vY);
+        TextZ = (TextView)findViewById(R.id.vZ);
 
         //-----得到此手機所有的感應器
         List<Sensor> sensors =  smgr.getSensorList(Sensor.TYPE_ALL);
@@ -58,7 +63,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onSensorChanged(SensorEvent event) {
-
+            float[] value = event.values;
+            float vx,vy,vz;
+            vx = value[0];
+            vy = value[1];
+            vz = value[2];
+            TextX.setText("X = " + vx);
+            TextY.setText("Y = " + vy);
+            TextZ.setText("Z = " + vz);
         }
 
         @Override

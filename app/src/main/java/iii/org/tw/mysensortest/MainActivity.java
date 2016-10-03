@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private Sensor sensor;
     private MySensorListener listener;
     private TextView TextX,TextY,TextZ;
+    private MyView myView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +25,10 @@ public class MainActivity extends AppCompatActivity {
 
         smgr = (SensorManager)getSystemService(SENSOR_SERVICE);
         listener = new MySensorListener();
-        TextX = (TextView)findViewById(R.id.vX);
-        TextY = (TextView)findViewById(R.id.vY);
-        TextZ = (TextView)findViewById(R.id.vZ);
+        myView = (MyView)findViewById(R.id.myView);
+//        TextX = (TextView)findViewById(R.id.vX);
+//        TextY = (TextView)findViewById(R.id.vY);
+//        TextZ = (TextView)findViewById(R.id.vZ);
 
         //-----得到此手機所有的感應器
         List<Sensor> sensors =  smgr.getSensorList(Sensor.TYPE_ALL);
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //-----三軸加速感應器
-        sensor = smgr.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        sensor = smgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (sensor == null) {
 
         }
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        Log.d("Abner","X =" + TextX.getWidth() + "Y = " + TextX.getHeight());
+        //Log.d("Abner","X =" + TextX.getWidth() + "Y = " + TextX.getHeight());
     }
 
     private class MySensorListener implements SensorEventListener {
@@ -75,9 +77,19 @@ public class MainActivity extends AppCompatActivity {
             vx = value[0];
             vy = value[1];
             vz = value[2];
-            TextX.setText("X = " + vx);
-            TextY.setText("Y = " + vy);
-            TextZ.setText("Z = " + vz);
+
+            float screenW = myView.getScreenW();
+            float screenH = myView.getScreenH();
+
+            if (screenH > 0 && screenW > 0 ) {
+                float rateX = screenW/(9.8f*2);
+                float rateY = screenH/(9.8f*2) *-1;
+                myView.setXY(vx*rateX+screenW/2,vy*rateY+screenH/2);
+            }
+
+//            TextX.setText("X = " + vx);
+//            TextY.setText("Y = " + vy);
+//            TextZ.setText("Z = " + vz);
         }
 
         @Override

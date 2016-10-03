@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        smgr.registerListener(listener,sensor,smgr.SENSOR_DELAY_NORMAL);
+        smgr.registerListener(listener,sensor,SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
